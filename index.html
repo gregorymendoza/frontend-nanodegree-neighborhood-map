@@ -3,50 +3,20 @@
 <head>
 	<meta charset="utf-8">
 	<title>Neighborhood Map Project</title>
-	<style type="text/css">
-    	html, body { height: 100%; margin: 0; padding: 0; }
-    	#map { height: 100%; }
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+	<link rel="stylesheet" href="css/styles.css">
+	<style>
+    	html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
+    	#map { width: 100%; height: 100%; }
    	</style>
 </head>
 <body>
 	<div id="map"></div>
-   	<script type="text/javascript">
 
-		// Create a map variable
-     	var map;
-
-     	// Function to initialize the map within the map div
-     	function initMap() {
-       		map = new google.maps.Map(document.getElementById('map'), {
-         		center: {lat: 10.480594, lng: -66.903606},
-         		zoom: 14
-       		});
-
-	       	// Create a single latLng literal object.
-	       	var singleLatLng = {lat: 10.480594, lng: -66.903606};
-	       	// TODO: Create a single marker appearing on initialize -
-	       	// Create it with the position of the singleLatLng,
-	       	// on the map, and give it your own title!
-	       	marker = new google.maps.Marker({
-	        	position: singleLatLng,
-	        	map: map,
-	        	title: 'First Marker!'
-	       	});
-
-	       	// TODO: create a single infowindow, with your own content.
-	       	// It must appear on the marker
-	       	var infowindow = new google.maps.InfoWindow({
-	        	content: 'Hello! This is an InfoWindow.'
-	       	});
-
-	       	// TODO: create an EVENT LISTENER so that the infowindow opens when
-	       	// the marker is clicked!
-	       	marker.addListener('click', function() {
-	        	infowindow.open(map, marker);
-	       	});
-     	}
-   	</script>
-   	<!--TODO: Insert your API Key in the below call to load the API.-->
+   	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+   	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-min.js"></script>
+   	<script src="js/app.js"></script>
    	<script async defer
     	src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyADizokXtHJtU5v9ZlHjGJLQTobx9iLrrg&callback=initMap">
    	</script>
