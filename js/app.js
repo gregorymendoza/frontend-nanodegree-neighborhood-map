@@ -1,3 +1,29 @@
+var locations = [{
+    	title: 'Sambil',
+    	location: {lat: 10.489459, lng: -66.854343},
+    	visible: ko.observable(true)
+    }, {
+    	title: 'El Recreo',
+    	location: {lat: 10.491714, lng: -66.877137},
+    	visible: ko.observable(true)
+    }, {
+    	title: 'El Tolón',
+    	location: {lat:  10.480487, lng: -66.860553},
+    	visible: ko.observable(true)
+    }, {
+    	title: 'San Ignacio',
+    	location: {lat: 10.4978, lng: -66.8565},
+    	visible: ko.observable(true)
+    }, {
+    	title: 'Paseo El Hatillo',
+    	location: {lat: 10.423652, lng: -66.824018},
+    	visible: ko.observable(true)
+    }, {
+    	title: 'Plaza las Américas',
+    	location: {lat: 10.458384, lng: -66.828957},
+    	visible: ko.observable(true)
+    }];
+
 // Create a map variable
 var map;
 
@@ -6,21 +32,94 @@ var markers = [];
 
 // Function to initialize the map within the map div
 function initMap() {
-	map = new google.maps.Map(document.getElementById('map'), {
+	var styles = [
+	    {
+	        "featureType": "administrative",
+	        "elementType": "all",
+	        "stylers": [
+	            {
+	                "visibility": "on"
+	            }, {
+	                "lightness": 33
+	            }
+	        ]
+	    }, {
+	        "featureType": "landscape",
+	        "elementType": "all",
+	        "stylers": [
+	            {
+	                "color": "#f2e5d4"
+	            }
+	        ]
+	    }, {
+	        "featureType": "poi.park",
+	        "elementType": "geometry",
+	        "stylers": [
+	            {
+	                "color": "#c5dac6"
+	            }
+	        ]
+	    }, {
+	        "featureType": "poi.park",
+	        "elementType": "labels",
+	        "stylers": [
+	            {
+	                "visibility": "on"
+	            }, {
+	                "lightness": 20
+	            }
+	        ]
+	    }, {
+	        "featureType": "road",
+	        "elementType": "all",
+	        "stylers": [
+	            {
+	                "lightness": 20
+	            }
+	        ]
+	    }, {
+	        "featureType": "road.highway",
+	        "elementType": "geometry",
+	        "stylers": [
+	            {
+	                "color": "#c5c6c6"
+	            }
+	        ]
+	    }, {
+	        "featureType": "road.arterial",
+	        "elementType": "geometry",
+	        "stylers": [
+	            {
+	                "color": "#e4d7c6"
+	            }
+	        ]
+	    }, {
+	        "featureType": "road.local",
+	        "elementType": "geometry",
+	        "stylers": [
+	            {
+	                "color": "#fbfaf7"
+	            }
+	        ]
+	    }, {
+	        "featureType": "water",
+	        "elementType": "all",
+	        "stylers": [
+	            {
+	                "visibility": "on"
+	            }, {
+	                "color": "#acbcc9"
+	            }
+	        ]
+	    }
+	]
+
+	map = new google.maps.Map(document.getElementById('mapDiv'), {
 		center: {lat: 10.480594, lng: -66.903606},
-		zoom: 20
+		zoom: 4,
+		styles: styles,
+		mapTypeControl: false
 	});
-
-	var locations = [
-        {title: 'Sambil', location: {lat: 10.489459, lng: -66.854343}},
-        {title: 'El Recreo', location: {lat: 10.491714, lng: -66.877137}},
-        {title: 'El Tolón', location: {lat:  10.480487, lng: -66.860553}},
-        {title: 'San Ignacio', location: {lat: 10.4978, lng: -66.8565}},
-        {title: 'Paseo El Hatillo', location: {lat: 10.423652, lng: -66.824018}},
-        {title: 'Plaza las Américas', location: {lat: 10.458384, lng: -66.828957}}
-    ];
-
-    var bounds = window.mapBounds;
 
     var largeInfowindow = new google.maps.InfoWindow();
 
@@ -36,6 +135,7 @@ function initMap() {
 		// Get the position from the location array.
 		var position = locations[i].location;
 		var title = locations[i].title;
+
 		// Create a marker per location, and put into markers array.
 		var marker = new google.maps.Marker({
 			position: position,
@@ -44,12 +144,16 @@ function initMap() {
 			icon: defaultIcon,
 			id: i
 		});
+
 		// Push the marker to our array of markers.
 		markers.push(marker);
+		locations[i].marker = marker;
+
 		// Create an onclick event to open the large infowindow at each marker.
 		marker.addListener('click', function() {
 			populateInfoWindow(this, largeInfowindow);
 		});
+
 		// Two event listeners - one for mouseover, one for mouseout,
 		// to change the colors back and forth.
 		marker.addListener('mouseover', function() {
@@ -60,6 +164,8 @@ function initMap() {
 		});
     }
 
+    ko.applyBindings(new ViewModel);
+
     var bounds = new google.maps.LatLngBounds();
     // Extend the boundaries of the map for each marker and display the marker
     for (var i = 0; i < markers.length; i++) {
@@ -67,8 +173,6 @@ function initMap() {
 		bounds.extend(markers[i].position);
     }
     map.fitBounds(bounds);
-
-    map.setCenter(bounds.getCenter());
 
     // Sets the boundaries of the map based on pin locations
     window.mapBounds = bounds;
@@ -114,3 +218,33 @@ window.addEventListener('resize', function(e) {
     //Make sure the map bounds get updated on page resize
     map.fitBounds(mapBounds);
 });
+
+var Mall = function(data) {
+ 	this.title = ko.observable(data.title);
+}
+
+var ViewModel = function() {
+	var self = this;
+	self.locs = ko.observableArray(locations);
+	self.filter = ko.observable();
+ 	//marker: ko.observableArray(locations),
+ 	self.filteredLocs = ko.computed(function() {
+ 		var locs = self.locs();
+        var filter = self.filter();
+        if (!filter) {
+        	for (var i = 0; i < locs.length; i++) {
+        		locs[i].marker.setVisible(true);
+        	}
+            return locs;
+        } else {
+            return ko.utils.arrayFilter(locs, function(loc) {
+            	if (loc.title.toLowerCase().indexOf(filter.toLowerCase()) >= 0) {
+            		loc.marker.setVisible(true);
+            		return loc;
+            	} else {
+            		loc.marker.setVisible(false);
+            	}
+            });
+        }
+    });
+};
