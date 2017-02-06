@@ -1,27 +1,27 @@
 var locations = [{
     	title: 'Sambil',
     	location: {lat: 10.489459, lng: -66.854343},
-    	visible: ko.observable(true)
+    	//visible: ko.observable(true)
     }, {
     	title: 'El Recreo',
     	location: {lat: 10.491714, lng: -66.877137},
-    	visible: ko.observable(true)
+    	//visible: ko.observable(true)
     }, {
     	title: 'El Tolón',
     	location: {lat:  10.480487, lng: -66.860553},
-    	visible: ko.observable(true)
+    	//visible: ko.observable(true)
     }, {
     	title: 'San Ignacio',
     	location: {lat: 10.4978, lng: -66.8565},
-    	visible: ko.observable(true)
+    	//visible: ko.observable(true)
     }, {
     	title: 'Paseo El Hatillo',
     	location: {lat: 10.423652, lng: -66.824018},
-    	visible: ko.observable(true)
+    	//visible: ko.observable(true)
     }, {
     	title: 'Plaza las Américas',
     	location: {lat: 10.458384, lng: -66.828957},
-    	visible: ko.observable(true)
+    	//visible: ko.observable(true)
     }];
 
 // Create a map variable
@@ -123,13 +123,6 @@ function initMap() {
 
     var largeInfowindow = new google.maps.InfoWindow();
 
-    // Style the markers a bit. This will be our listing marker icon.
-	var defaultIcon = makeMarkerIcon('0091ff');
-
-    // Create a "highlighted location" marker color for when the user
-    // mouses over the marker.
-    var highlightedIcon = makeMarkerIcon('ffff24');
-
     // The following group uses the location array to create an array of markers on initialize.
     for (var i = 0; i < locations.length; i++) {
 		// Get the position from the location array.
@@ -141,7 +134,7 @@ function initMap() {
 			position: position,
 			title: title,
 			animation: google.maps.Animation.DROP,
-			icon: defaultIcon,
+			icon: 'img/mall-default.png',
 			id: i
 		});
 
@@ -157,10 +150,10 @@ function initMap() {
 		// Two event listeners - one for mouseover, one for mouseout,
 		// to change the colors back and forth.
 		marker.addListener('mouseover', function() {
-			this.setIcon(highlightedIcon);
+			this.setIcon('img/mall-highlighted.png');
 		});
 		marker.addListener('mouseout', function() {
-			this.setIcon(defaultIcon);
+			this.setIcon('img/mall-default.png');
 		});
     }
 
@@ -196,20 +189,6 @@ function populateInfoWindow(marker, infowindow) {
 
 		infowindow.open(map, marker);
 	}
-}
-
-// This function takes in a COLOR, and then creates a new marker
-// icon of that color. The icon will be 21 px wide by 34 high, have an origin
-// of 0, 0 and be anchored at 10, 34).
-function makeMarkerIcon(markerColor) {
-	var markerImage = new google.maps.MarkerImage(
-		'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
-		'|40|_|%E2%80%A2',
-		new google.maps.Size(21, 34),
-		new google.maps.Point(0, 0),
-		new google.maps.Point(10, 34),
-		new google.maps.Size(21,34));
-	return markerImage;
 }
 
 // Vanilla JS way to listen for resizing of the window
