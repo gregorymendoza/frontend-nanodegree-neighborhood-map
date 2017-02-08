@@ -49,7 +49,7 @@
 		<input id="search-input" placeholder="Search..." data-bind="value: filter, valueUpdate: 'keyup'">
 		<hr>
 		<div data-bind="foreach: filteredLocs">
-        	<p data-bind="text: title"></p>
+        	<p data-bind="text: title, click: $root.mallClicked.bind($data, $index())"></p>
     	</div>
 	</div>
 	<div id="mapDiv"></div>
