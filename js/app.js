@@ -230,7 +230,12 @@ var ViewModel = function() {
         }
     });
 
-    self.mallClicked = function(index) {
-    	populateInfoWindow(locations[index].marker, infowindow.largeInfowindow);
+    self.mallClicked = function(data) {
+    	for (var i=0; i < locations.length; i++) {
+    		if (data.title == locations[i].title) {
+    			populateInfoWindow(locations[i].marker, infowindow.largeInfowindow);
+    		}
+    	}
+    	console.log(data.title);
     }
 };
