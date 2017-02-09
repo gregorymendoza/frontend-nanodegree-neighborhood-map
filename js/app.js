@@ -1,27 +1,31 @@
 var locations = [{
-    	title: 'Sambil',
+    	title: 'Centro Sambil Chacao',
     	location: {lat: 10.489459, lng: -66.854343},
-    	visible: ko.observable(true)
+    	flickrId: '3940245284'
     }, {
     	title: 'El Recreo',
     	location: {lat: 10.491714, lng: -66.877137},
-    	visible: ko.observable(true)
+    	flickrId: '435240710'
     }, {
-    	title: 'El Tolón',
+    	title: 'Fashion Mall Tolon',
     	location: {lat:  10.480487, lng: -66.860553},
-    	visible: ko.observable(true)
+    	flickrId: '641477536'
     }, {
-    	title: 'San Ignacio',
+    	title: 'Centro San Ignacio',
     	location: {lat: 10.4978, lng: -66.8565},
-    	visible: ko.observable(true)
+    	flickrId: '2653309'
     }, {
-    	title: 'Paseo El Hatillo',
+    	title: 'Centro Paseo El Hatillo',
     	location: {lat: 10.423652, lng: -66.824018},
-    	visible: ko.observable(true)
+    	flickrId: '343577966'
     }, {
-    	title: 'Plaza las Américas',
+    	title: 'Plaza Las Américas',
     	location: {lat: 10.458384, lng: -66.828957},
-    	visible: ko.observable(true)
+    	flickrId: '208775634'
+    }, {
+    	title: 'Galerias Sebucan Shopping Mall',
+    	location: {lat: 10.508163, lng: -66.832222},
+    	flickrId: '5483506532'
     }];
 
 // Create a map variable
@@ -116,7 +120,7 @@ function initMap() {
 	    }
 	]
 
-	map = new google.maps.Map(document.getElementById('mapDiv'), {
+	map = new google.maps.Map(document.getElementById('map-div'), {
 		center: {lat: 10.480594, lng: -66.903606},
 		zoom: 4,
 		styles: styles,
@@ -131,11 +135,13 @@ function initMap() {
 		// Get the position from the location array.
 		var position = locations[i].location;
 		var title = locations[i].title;
+		var flickrId = locations[i].flickrId;
 
 		// Create a marker per location, and put into markers array.
 		var marker = new google.maps.Marker({
 			position: position,
 			title: title,
+			flickrId: flickrId,
 			animation: google.maps.Animation.DROP,
 			icon: 'img/mall-default.png',
 			id: i
@@ -160,8 +166,6 @@ function initMap() {
 		});
     }
 
-    ko.applyBindings(new ViewModel);
-
     var bounds = new google.maps.LatLngBounds();
     // Extend the boundaries of the map for each marker and display the marker
     for (var i = 0; i < markers.length; i++) {
@@ -172,6 +176,8 @@ function initMap() {
 
     // Sets the boundaries of the map based on pin locations
     window.mapBounds = bounds;
+
+    ko.applyBindings(new ViewModel);
 }
 
 // This function populates the infowindow when the marker is clicked. We'll only allow
@@ -183,14 +189,53 @@ function populateInfoWindow(marker, infowindow) {
 		// Clear the infowindow content to give the streetview time to load.
 		infowindow.setContent('');
 		infowindow.marker = marker;
-		// Make sure the marker property is cleared if the infowindow is closed.
-		infowindow.addListener('closeclick', function() {
-			infowindow.marker = null;
+
+		function FlickrPhoto(title, owner, flickrURL, imageURL) {
+		    this.title = title;
+		    this.owner = owner;
+		    this.flickrURL = flickrURL;
+		    this.imageURL = imageURL;
+		}
+
+		function FlickrService() {
+	    	this.flickrApiKey = "763559574f01aba248683d2c09e3f701";
+	    	this.flickrGetInfoURL = "https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&nojsoncallback=1&format=json";
+
+		    this.getPhotoInfo = function(photoId, callback) {
+		        var ajaxOptions = {
+		            type: 'GET',
+		            url: this.flickrGetInfoURL,
+		            data: { api_key: this.flickrApiKey, photo_id: photoId },
+		            dataType: 'json',
+		            success: function (data) {
+		                if (data.stat == "ok") {
+		                    var photo = data.photo;
+		                    var photoTitle = photo.title._content;
+		                    var photoOwner = photo.owner.realname;
+		                    var photoWebURL = photo.urls.url[0]._content;
+		                    var photoStaticURL = "https://farm" + photo.farm + ".staticflickr.com/" +  photo.server + "/" + photo.id + "_" + photo.secret + "_q.jpg";
+
+		                    var flickrPhoto = new FlickrPhoto(photoTitle, photoOwner, photoWebURL, photoStaticURL);
+		                    callback(flickrPhoto);
+		                }
+		            }
+		        };
+
+		        $.ajax(ajaxOptions);
+		    }
+		}
+
+		var flickrService = new FlickrService();
+		flickrService.getPhotoInfo(marker.flickrId, function(photo) {
+    		// Make sure the marker property is cleared if the infowindow is closed.
+			infowindow.addListener('closeclick', function() {
+				infowindow.marker = null;
+			});
+
+			infowindow.setContent('<div>' + marker.title + '</div>' + '<img class="mall-thumbnail" src="' + photo.imageURL + '"/>');
+
+			infowindow.open(map, marker);
 		});
-
-		infowindow.setContent('<div>' + marker.title + '</div>');
-
-		infowindow.open(map, marker);
 	}
 }
 
@@ -200,10 +245,6 @@ window.addEventListener('resize', function(e) {
     //Make sure the map bounds get updated on page resize
     map.fitBounds(mapBounds);
 });
-
-var Mall = function(data) {
- 	this.title = ko.observable(data.title);
-}
 
 var ViewModel = function() {
 	var self = this;
