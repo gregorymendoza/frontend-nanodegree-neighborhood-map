@@ -40,89 +40,200 @@ infowindow = {};
 function initMap() {
 	var styles = [
 	    {
-	        "featureType": "administrative",
-	        "elementType": "all",
-	        "stylers": [
-	            {
+	        "featureType": "all",
+	        "elementType": "labels.text.fill",
+	        "stylers": [{
+	                "saturation": 36
+	            }, {
+	                "color": "#000000"
+	            }, {
+	                "lightness": 40
+	            }]
+	    }, {
+	        "featureType": "all",
+	        "elementType": "labels.text.stroke",
+	        "stylers": [{
 	                "visibility": "on"
 	            }, {
-	                "lightness": 33
-	            }
-	        ]
+	                "color": "#000000"
+	            }, {
+	                "lightness": 16
+	            }]
+	    }, {
+	        "featureType": "all",
+	        "elementType": "labels.icon",
+	        "stylers": [{
+	                "visibility": "off"
+	            }]
+	    }, {
+	        "featureType": "administrative",
+	        "elementType": "geometry.fill",
+	        "stylers": [{
+	                "color": "#000000"
+	            }, {
+	                "lightness": 20
+	            }]
+	    }, {
+	        "featureType": "administrative",
+	        "elementType": "geometry.stroke",
+	        "stylers": [{
+	                "color": "#000000"
+	            }, {
+	                "lightness": 17
+	            }, {
+	                "weight": 1.2
+	            }]
+	    }, {
+	        "featureType": "administrative",
+	        "elementType": "labels",
+	        "stylers": [{
+	                "visibility": "off"
+	            }]
+	    }, {
+	        "featureType": "administrative.country",
+	        "elementType": "all",
+	        "stylers": [{
+	                "visibility": "simplified"
+	            }]
+	    }, {
+	        "featureType": "administrative.country",
+	        "elementType": "geometry",
+	        "stylers": [{
+	                "visibility": "simplified"
+	            }]
+	    }, {
+	        "featureType": "administrative.country",
+	        "elementType": "labels.text",
+	        "stylers": [{
+	                "visibility": "simplified"
+	            }]
+	    }, {
+	        "featureType": "administrative.province",
+	        "elementType": "all",
+	        "stylers": [{
+	                "visibility": "off"
+	            }]
+	    }, {
+	        "featureType": "administrative.locality",
+	        "elementType": "all",
+	        "stylers": [{
+	                "visibility": "simplified"
+	            }, {
+	                "saturation": "-100"
+	            }, {
+	                "lightness": "30"
+	            }]
+	    }, {
+	        "featureType": "administrative.neighborhood",
+	        "elementType": "all",
+	        "stylers": [{
+	                "visibility": "off"
+	            }]
+	    }, {
+	        "featureType": "administrative.land_parcel",
+	        "elementType": "all",
+	        "stylers": [{
+	                "visibility": "off"
+	            }]
 	    }, {
 	        "featureType": "landscape",
 	        "elementType": "all",
-	        "stylers": [
-	            {
-	                "color": "#f2e5d4"
-	            }
-	        ]
+	        "stylers": [{
+	                "visibility": "simplified"
+	            }, {
+	                "gamma": "0.00"
+	            }, {
+	                "lightness": "74"
+	            }]
 	    }, {
-	        "featureType": "poi.park",
+	        "featureType": "landscape",
 	        "elementType": "geometry",
-	        "stylers": [
-	            {
-	                "color": "#c5dac6"
-	            }
-	        ]
-	    }, {
-	        "featureType": "poi.park",
-	        "elementType": "labels",
-	        "stylers": [
-	            {
-	                "visibility": "on"
+	        "stylers": [{
+	                "color": "#000000"
 	            }, {
 	                "lightness": 20
-	            }
-	        ]
+	            }]
+	    }, {
+	        "featureType": "landscape.man_made",
+	        "elementType": "all",
+	        "stylers": [{
+	                "lightness": "3"
+	            }]
+	    }, {
+	        "featureType": "poi",
+	        "elementType": "all",
+	        "stylers": [{
+	                "visibility": "off"
+	            }]
+	    }, {
+	        "featureType": "poi",
+	        "elementType": "geometry",
+	        "stylers": [{
+	                "color": "#000000"
+	            }, {
+	                "lightness": 21
+	            }]
 	    }, {
 	        "featureType": "road",
-	        "elementType": "all",
-	        "stylers": [
-	            {
-	                "lightness": 20
-	            }
-	        ]
+	        "elementType": "geometry",
+	        "stylers": [{
+	                "visibility": "simplified"
+	            }]
 	    }, {
 	        "featureType": "road.highway",
-	        "elementType": "geometry",
-	        "stylers": [
-	            {
-	                "color": "#c5c6c6"
-	            }
-	        ]
+	        "elementType": "geometry.fill",
+	        "stylers": [{
+	                "color": "#000000"
+	            }, {
+	                "lightness": 17
+	            }]
+	    }, {
+	        "featureType": "road.highway",
+	        "elementType": "geometry.stroke",
+	        "stylers": [{
+	                "color": "#000000"
+	            }, {
+	                "lightness": 29
+	            }, {
+	                "weight": 0.2
+	            }]
 	    }, {
 	        "featureType": "road.arterial",
 	        "elementType": "geometry",
-	        "stylers": [
-	            {
-	                "color": "#e4d7c6"
-	            }
-	        ]
+	        "stylers": [{
+	                "color": "#000000"
+	            }, {
+	                "lightness": 18
+	            }]
 	    }, {
 	        "featureType": "road.local",
 	        "elementType": "geometry",
-	        "stylers": [
-	            {
-	                "color": "#fbfaf7"
-	            }
-	        ]
+	        "stylers": [{
+	                "color": "#000000"
+	            }, {
+	                "lightness": 16
+	            }]
+	    }, {
+	        "featureType": "transit",
+	        "elementType": "geometry",
+	        "stylers": [{
+	                "color": "#000000"
+	            }, {
+	                "lightness": 19
+	            }]
 	    }, {
 	        "featureType": "water",
-	        "elementType": "all",
-	        "stylers": [
-	            {
-	                "visibility": "on"
+	        "elementType": "geometry",
+	        "stylers": [{
+	                "color": "#000000"
 	            }, {
-	                "color": "#acbcc9"
-	            }
-	        ]
-	    }
-	]
+	                "lightness": 17
+	            }]
+	    }]
 
 	map = new google.maps.Map(document.getElementById('map-div'), {
 		center: {lat: 10.480594, lng: -66.903606},
-		zoom: 4,
+		zoom: 14,
 		styles: styles,
 		mapTypeControl: false
 	});
@@ -143,8 +254,7 @@ function initMap() {
 			title: title,
 			flickrId: flickrId,
 			animation: google.maps.Animation.DROP,
-			icon: 'img/mall-default.png',
-			id: i
+			icon: 'img/mall-default.png'
 		});
 
 		// Push the marker to our array of markers.
@@ -218,7 +328,9 @@ function populateInfoWindow(marker, infowindow) {
 		                    var flickrPhoto = new FlickrPhoto(photoTitle, photoOwner, photoWebURL, photoStaticURL);
 		                    callback(flickrPhoto);
 		                }
-		            }
+		            }, error: function () {
+    					console.log("There was an error trying to load the Flickr API.");
+    				}
 		        };
 
 		        $.ajax(ajaxOptions);
@@ -227,7 +339,7 @@ function populateInfoWindow(marker, infowindow) {
 
 		var flickrService = new FlickrService();
 		flickrService.getPhotoInfo(marker.flickrId, function(photo) {
-    		// Make sure the marker property is cleared if the infowindow is closed.
+			// Make sure the marker property is cleared if the infowindow is closed.
 			infowindow.addListener('closeclick', function() {
 				infowindow.marker = null;
 			});
@@ -235,6 +347,8 @@ function populateInfoWindow(marker, infowindow) {
 			infowindow.setContent('<div>' + marker.title + '</div>' + '<img class="mall-thumbnail" src="' + photo.imageURL + '"/>');
 
 			infowindow.open(map, marker);
+
+			map.panTo(marker.position);
 		});
 	}
 }

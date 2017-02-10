@@ -5,7 +5,7 @@
 	<title>Neighborhood Map Project</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700">
-	<link rel="stylesheet" href="css/styles.css">
+	<!-- <link rel="stylesheet" href="css/styles.css"> -->
 	<link rel="stylesheet" href="https://use.fontawesome.com/93839bed07.css" media="all">
 	<style>
 		* {
@@ -49,7 +49,6 @@
             background: linear-gradient(to bottom,#4b4b4b 0,#414141 50%,#373737 100%);
     	}
     	.filter-body {
-    		height: 100%;
     		padding: 10px 25px;
     		white-space: nowrap;
     	}
@@ -60,6 +59,11 @@
     	.mall-list {
     		cursor: pointer;
     		color: #a9a9a9;
+    		-webkit-transition: color 0.3s ease-in-out;
+			-moz-transition: color 0.3s ease-in-out;
+			-ms-transition: color 0.3s ease-in-out;
+			-o-transition: color 0.3s ease-in-out;
+			transition: color 0.3s ease-in-out;
     	}
     	.mall-list:hover {
     		color: #fff;
@@ -68,7 +72,6 @@
     		margin: 0 auto;
     	}
     	#map-div {
-    		/*width: calc(100% - 280px);*/
     		height: 100%;
     	}
    	</style>
