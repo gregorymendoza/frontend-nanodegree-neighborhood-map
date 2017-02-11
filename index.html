@@ -26,19 +26,19 @@
     	h1 { font-size: 20px; text-align: center; font-weight: normal; margin: 0; }
     	#filter-div {
     		width: 280px;
-    		height: 100%;
-    		/*position: absolute;
+    		/*height: 100%;*/
+    		position: absolute;
     		top: 0;
     		bottom: 0;
     		left: 0;
-			background-color: rgba(255, 255, 255, 0.65);
+			/*background-color: rgba(255, 255, 255, 0.65);*/
 			/* For IE 8*/
 			/*-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
 			z-index: 99;*/
 			/*padding: 10px;*/
-			float: left;
+			/*float: left;*/
 			border: 5px solid #1e1e1e;
-			background-color: #4B4B4B;
+			background-color: #4b4b4b;
     	}
     	.filter-head {
 			color: #ccc;
@@ -68,11 +68,30 @@
     	.mall-list:hover {
     		color: #fff;
     	}
-    	.mall-thumbnail {
-    		margin: 0 auto;
-    	}
     	#map-div {
+    		margin-left: 280px;
     		height: 100%;
+    		background-color: #4b4b4b;
+    		position: relative;
+    	}
+    	.gm-style-iw > div {
+    		text-align: center;
+    	}
+    	.infowindow-title {
+    		font-weight: bold;
+    	}
+    	.mall-thumbnail {
+    		margin: 10px auto 0;
+    	}
+    	#gmap-error {
+    		position: absolute;
+		    top: 50%;
+		    left: 50%;
+		    transform: translateX(-50%) translateY(-50%);
+		    color: #edd496;
+    	}
+    	.gmap-error-hidden {
+    		display: none;
     	}
    	</style>
 </head>
@@ -86,12 +105,14 @@
         	<p class="mall-list" data-bind="text: title, click: $root.mallClicked.bind($data)"></p>
     	</div>
 	</div>
-	<div id="map-div"></div>
+	<div id="map-div">
+		<div id="gmap-error" class="gmap-error-hidden">There was an error trying to load Google Maps</div>
+	</div>
 
    	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
    	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-min.js"></script>
    	<script src="js/app.js"></script>
-   	<script async defer	src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyADizokXtHJtU5v9ZlHjGJLQTobx9iLrrg&callback=initMap">
+   	<script async defer	src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyADizokXtHJtU5v9ZlHjGJLQTobx9iLrrg&callback=initMap" onerror="googleMapError()">
    	</script>
 </body>
 </html>

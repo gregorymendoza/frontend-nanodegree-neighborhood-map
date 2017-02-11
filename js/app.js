@@ -19,7 +19,7 @@ var locations = [{
     	location: {lat: 10.423652, lng: -66.824018},
     	flickrId: '343577966'
     }, {
-    	title: 'Plaza Las Américas',
+    	title: 'Plaza Las Americas',
     	location: {lat: 10.458384, lng: -66.828957},
     	flickrId: '208775634'
     }, {
@@ -35,6 +35,10 @@ var map;
 var markers = [];
 
 infowindow = {};
+
+var gmapRequestTimeout = setTimeout(function() {
+    $('#gmap-error').removeClass('gmap-error-hidden');
+}, 5000);
 
 // Function to initialize the map within the map div
 function initMap() {
@@ -287,6 +291,8 @@ function initMap() {
     // Sets the boundaries of the map based on pin locations
     window.mapBounds = bounds;
 
+    clearTimeout(gmapRequestTimeout);
+
     ko.applyBindings(new ViewModel);
 }
 
@@ -344,7 +350,7 @@ function populateInfoWindow(marker, infowindow) {
 				infowindow.marker = null;
 			});
 
-			infowindow.setContent('<div>' + marker.title + '</div>' + '<img class="mall-thumbnail" src="' + photo.imageURL + '"/>');
+			infowindow.setContent('<div class="infowindow-title">' + marker.title + '</div>' + '<img class="mall-thumbnail" src="' + photo.imageURL + '"/>');
 
 			infowindow.open(map, marker);
 
@@ -364,7 +370,7 @@ var ViewModel = function() {
 	var self = this;
 	self.locs = ko.observableArray(locations);
 	self.filter = ko.observable();
- 	//marker: ko.observableArray(locations),
+
  	self.filteredLocs = ko.computed(function() {
  		var locs = self.locs();
         var filter = self.filter();
