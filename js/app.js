@@ -242,7 +242,9 @@ function initMap() {
 		mapTypeControl: false
 	});
 
-    infowindow.largeInfowindow = new google.maps.InfoWindow();
+    infowindow.largeInfowindow = new google.maps.InfoWindow({
+    	pixelOffset: new google.maps.Size(0, 5)
+    });
 
     // The following group uses the location array to create an array of markers on initialize.
     for (var i = 0; i < locations.length; i++) {
@@ -315,6 +317,7 @@ function populateInfoWindow(marker, infowindow) {
 		infowindow.open(map, marker);
 
 		map.panTo(marker.position);
+		map.panBy(0, -100);
 
 		var $infowindowElem = $('.infowindow-wrapper');
 
