@@ -242,7 +242,6 @@ function initMap() {
 		mapTypeControl: false
 	});
 
-    //var largeInfowindow = new google.maps.InfoWindow();
     infowindow.largeInfowindow = new google.maps.InfoWindow();
 
     // The following group uses the location array to create an array of markers on initialize.
@@ -306,6 +305,19 @@ function populateInfoWindow(marker, infowindow) {
 		infowindow.setContent('');
 		infowindow.marker = marker;
 
+		// Make sure the marker property is cleared if the infowindow is closed.
+		infowindow.addListener('closeclick', function() {
+			infowindow.marker = null;
+		});
+
+		infowindow.setContent('<div class="infowindow-wrapper"><div class="infowindow-title">' + marker.title + '</div></div>');
+
+		infowindow.open(map, marker);
+
+		map.panTo(marker.position);
+
+		var $infowindowElem = $('.infowindow-wrapper');
+
 		function FlickrPhoto(title, owner, flickrURL, imageURL) {
 		    this.title = title;
 		    this.owner = owner;
@@ -336,6 +348,7 @@ function populateInfoWindow(marker, infowindow) {
 		                }
 		            }, error: function () {
     					console.log("There was an error trying to load the Flickr API.");
+    					$infowindowElem.append('<div class="flickr-error"><em>Flickr photos not loading.</em></div>');
     				}
 		        };
 
@@ -345,16 +358,7 @@ function populateInfoWindow(marker, infowindow) {
 
 		var flickrService = new FlickrService();
 		flickrService.getPhotoInfo(marker.flickrId, function(photo) {
-			// Make sure the marker property is cleared if the infowindow is closed.
-			infowindow.addListener('closeclick', function() {
-				infowindow.marker = null;
-			});
-
-			infowindow.setContent('<div class="infowindow-title">' + marker.title + '</div>' + '<img class="mall-thumbnail" src="' + photo.imageURL + '"/>');
-
-			infowindow.open(map, marker);
-
-			map.panTo(marker.position);
+			$infowindowElem.append('<img class="mall-thumbnail" src="' + photo.imageURL + '"/>');
 		});
 	}
 }
