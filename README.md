@@ -4,7 +4,7 @@ Fifth project of the Udacity's Front-End Web Developer Nanodegree Program. It is
 
 ##Getting Started
 
-Preview this project on GitHub pages: https://gregorymendoza.github.io/frontend-nanodegree-neighborhood-map/
+Preview this project on GitHub pages: https://gregorymendoza.github.io/frontend-nanodegree-neighborhood-map/dist/index.html
 
 If you prefer to test it locally, clone this repository with Git or download the ZIP file and extract it to your local machine, then do the following:
 
