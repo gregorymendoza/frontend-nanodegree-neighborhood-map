@@ -292,8 +292,8 @@ function initMap() {
 // one infowindow which will open at the marker that is clicked, and populate based
 // on that markers position.
 function populateInfoWindow(marker, infowindow) {
-	// Check to make sure the infowindow is not already opened on this marker.
-	if (infowindow.marker != marker) {
+	// Check to make sure the infowindow is not already opened on this marker or none is open.
+	if (infowindow.marker != marker || !infowindow.getMap()) {
 		// Clear the infowindow content.
 		infowindow.setContent('');
 		infowindow.marker = marker;
@@ -380,15 +380,17 @@ var ViewModel = function() {
 	self.filter = ko.observable();
 	self.gmapError = ko.observable(false);
 
+	var locs = self.locs();
+	var info = infowindow.largeInfowindow;
+
 	// This function will automatically trigger when the filter string value changes.
  	self.filteredLocs = ko.computed(function() {
- 		var locs = self.locs();
         var filter = self.filter();
 
-        infowindow.largeInfowindow.close();
+        info.close();
 
-        for (var i=0; i < locations.length; i++) {
-			locations[i].marker.setIcon('img/mall-default.png');
+        for (var i=0; i < locs.length; i++) {
+			locs[i].marker.setIcon('img/mall-default.png');
 		}
 
         if (!filter) {
@@ -412,9 +414,9 @@ var ViewModel = function() {
 
  	// Click binding function to open location info considering its title name.
     self.mallClicked = function(data) {
-    	for (var i=0; i < locations.length; i++) {
-    		if (data.title == locations[i].title) {
-    			populateInfoWindow(locations[i].marker, infowindow.largeInfowindow);
+    	for (var i=0; i < locs.length; i++) {
+    		if (data.title == locs[i].title) {
+    			populateInfoWindow(locs[i].marker, info);
     		}
     	}
     	console.log(data.title);
