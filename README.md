@@ -43,4 +43,4 @@ For further in-depth documentation visit Grunt's official website: http://gruntj
 
 ##Credits
 
-Maps Icons Collection https://mapicons.mapsmarker.com ![alt tag](https://mapicons.mapsmarker.com/wp-content/uploads/2011/03/miclogo-88x31.gif)
+Maps Icons Collection https://mapicons.mapsmarker.com ![logo](http://mapicons.mapsmarker.com/wp-content/uploads/2011/03/miclogo-88x31.gif)
