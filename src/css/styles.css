@@ -151,10 +151,6 @@ h1 { font-size: 20px; font-weight: normal; margin: 0; color: #ccc; }
     text-align: center;
 }
 
-.gmap-error-hidden {
-	display: none;
-}
-
 .gm-style-iw > div {
 	text-align: center;
 }

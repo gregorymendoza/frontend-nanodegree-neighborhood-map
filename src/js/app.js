@@ -39,11 +39,6 @@ var markers = [];
 // Create an empty infowindow object so it's content can be accessed globally.
 infowindow = {};
 
-// Initialize Google Maps error handling.
-var gmapRequestTimeout = setTimeout(function() {
-    $('#gmap-error').removeClass('gmap-error-hidden');
-}, 7000);
-
 // Function to initialize the map within the map div
 function initMap() {
 	// Create a styles array to use with the map.
@@ -248,7 +243,7 @@ function initMap() {
 		mapTypeControl: false
 	});
 
-    // Tweak info window Y position.
+    // Tweak infowindow Y position.
     infowindow.largeInfowindow = new google.maps.InfoWindow({
     	pixelOffset: new google.maps.Size(0, 5)
     });
@@ -277,15 +272,6 @@ function initMap() {
 		marker.addListener('click', function() {
 			populateInfoWindow(this, infowindow.largeInfowindow);
 		});
-
-		// Two event listeners - one for mouseover, one for mouseout,
-		// to change the colors back and forth.
-		marker.addListener('mouseover', function() {
-			this.setIcon('img/mall-highlighted.png');
-		});
-		marker.addListener('mouseout', function() {
-			this.setIcon('img/mall-default.png');
-		});
     }
 
     var bounds = new google.maps.LatLngBounds();
@@ -299,8 +285,6 @@ function initMap() {
     // Sets the boundaries of the map based on pin locations
     window.mapBounds = bounds;
 
-    clearTimeout(gmapRequestTimeout);
-
     ko.applyBindings(new ViewModel);
 }
 
@@ -310,13 +294,20 @@ function initMap() {
 function populateInfoWindow(marker, infowindow) {
 	// Check to make sure the infowindow is not already opened on this marker.
 	if (infowindow.marker != marker) {
-		// Clear the infowindow content to give the streetview time to load.
+		// Clear the infowindow content.
 		infowindow.setContent('');
 		infowindow.marker = marker;
+
+		for (var i=0; i < locations.length; i++) {
+			locations[i].marker.setIcon('img/mall-default.png');
+		}
+
+		marker.setIcon('img/mall-highlighted.png');
 
 		// Make sure the marker property is cleared if the infowindow is closed.
 		infowindow.addListener('closeclick', function() {
 			infowindow.marker = null;
+			marker.setIcon('img/mall-default.png');
 		});
 
 		infowindow.setContent('<div class="infowindow-wrapper"><div class="infowindow-title">' + marker.title + '</div></div>');
@@ -387,11 +378,18 @@ var ViewModel = function() {
 	var self = this;
 	self.locs = ko.observableArray(locations);
 	self.filter = ko.observable();
+	self.gmapError = ko.observable(false);
 
-	// This function will automatically trigger when the filter string value change.
+	// This function will automatically trigger when the filter string value changes.
  	self.filteredLocs = ko.computed(function() {
  		var locs = self.locs();
         var filter = self.filter();
+
+        infowindow.largeInfowindow.close();
+
+        for (var i=0; i < locations.length; i++) {
+			locations[i].marker.setIcon('img/mall-default.png');
+		}
 
         if (!filter) {
         	// Shows all locations by default when text input value is cleared.
@@ -422,3 +420,7 @@ var ViewModel = function() {
     	console.log(data.title);
     }
 };
+
+function googleMapError() {
+	gmapError(true);
+}

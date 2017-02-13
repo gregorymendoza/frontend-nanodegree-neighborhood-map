@@ -4,7 +4,7 @@ Fifth project of the Udacity's Front-End Web Developer Nanodegree Program. It is
 
 ##Getting Started
 
-Preview this project on GitHub pages: https://gregorymendoza.github.io/frontend-nanodegree-neighborhood-map/
+Preview this project on GitHub pages: https://gregorymendoza.github.io/frontend-nanodegree-neighborhood-map/dist/index.html
 
 If you prefer to test it locally, clone this repository with Git or download the ZIP file and extract it to your local machine, then do the following:
 
@@ -28,7 +28,7 @@ If you prefer to test it locally, clone this repository with Git or download the
   $> ngrok http 8080
   ```
 
-1. Copy the public URL ngrok gives you and try running it through PageSpeed Insights! Optional: [More on integrating ngrok, Grunt and PageSpeed.](http://www.jamescryer.com/2014/06/12/grunt-pagespeed-and-ngrok-locally-testing/)
+1. Copy the public URL ngrok gives you and test the app on all devices.
 
 ##How to Run Grunt
 
@@ -43,4 +43,4 @@ For further in-depth documentation visit Grunt's official website: http://gruntj
 
 ##Credits
 
-Maps Icons Collection https://mapicons.mapsmarker.com ![alt tag](https://mapicons.mapsmarker.com/wp-content/uploads/2011/03/miclogo-88x31.gif)
+Maps Icons Collection https://mapicons.mapsmarker.com ![logo](http://mapicons.mapsmarker.com/wp-content/uploads/2011/03/miclogo-88x31.gif)
