@@ -387,7 +387,6 @@ var ViewModel = function() {
 	self.locs = ko.observableArray(locations);
 	self.filter = ko.observable();
 	self.gmapError = ko.observable(checkMapSuccess());
-	self.loadingDone = ko.observable(false);
 
 	var locs = self.locs();
 	var info = infowindow.largeInfowindow;
