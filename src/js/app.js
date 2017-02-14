@@ -33,11 +33,13 @@ var locations = [{
 // Create a map variable.
 var map;
 
+var mapFullyLoaded = false;
+
 // Create a new blank array for all the listing markers.
 var markers = [];
 
-// Create an empty infowindow object so it's content can be accessed globally.
-infowindow = {};
+// Create an empty infowindow object to read from and write on it globally.
+var infowindow = {};
 
 // Function to initialize the map within the map div
 function initMap() {
@@ -285,6 +287,8 @@ function initMap() {
     // Sets the boundaries of the map based on pin locations
     window.mapBounds = bounds;
 
+    mapFullyLoaded = true;
+
     ko.applyBindings(new ViewModel);
 }
 
@@ -310,7 +314,9 @@ function populateInfoWindow(marker, infowindow) {
 			marker.setIcon('img/mall-default.png');
 		});
 
-		infowindow.setContent('<div class="infowindow-wrapper"><div class="infowindow-title">' + marker.title + '</div></div>');
+		var infowindowTitle = '<div class="infowindow-title">' + marker.title + '</div>';
+
+		infowindow.setContent(infowindowTitle);
 
 		infowindow.open(map, marker);
 
@@ -318,12 +324,7 @@ function populateInfoWindow(marker, infowindow) {
 		map.panTo(marker.position);
 		map.panBy(0, -100);
 
-		var $infowindowElem = $('.infowindow-wrapper');
-
-		function FlickrPhoto(title, owner, flickrURL, imageURL) {
-		    this.title = title;
-		    this.owner = owner;
-		    this.flickrURL = flickrURL;
+		function FlickrPhoto(imageURL) {
 		    this.imageURL = imageURL;
 		}
 
@@ -341,17 +342,14 @@ function populateInfoWindow(marker, infowindow) {
 		            success: function (data) {
 		                if (data.stat == "ok") {
 		                    var photo = data.photo;
-		                    var photoTitle = photo.title._content;
-		                    var photoOwner = photo.owner.realname;
-		                    var photoWebURL = photo.urls.url[0]._content;
 		                    var photoStaticURL = "https://farm" + photo.farm + ".staticflickr.com/" +  photo.server + "/" + photo.id + "_" + photo.secret + "_q.jpg";
 
-		                    var flickrPhoto = new FlickrPhoto(photoTitle, photoOwner, photoWebURL, photoStaticURL);
+		                    var flickrPhoto = new FlickrPhoto(photoStaticURL);
 		                    callback(flickrPhoto);
 		                }
 		            }, error: function () {
-    					console.log("There was an error trying to load the Flickr API.");
-    					$infowindowElem.append('<div class="flickr-error"><em>Flickr photos not loading.</em></div>');
+    					var infowindowPhotoNull = '<div class="flickr-error"><em>Flickr photo data not available.</em></div>';
+    					infowindow.setContent(infowindowTitle + infowindowPhotoNull);
     				}
 		        };
 
@@ -362,7 +360,8 @@ function populateInfoWindow(marker, infowindow) {
 		var flickrService = new FlickrService();
 		// Flickr photo data gets appended to the infowindow
 		flickrService.getPhotoInfo(marker.flickrId, function(photo) {
-			$infowindowElem.append('<img class="mall-thumbnail" src="' + photo.imageURL + '"/>');
+			var infowindowPhoto = '<img class="mall-thumbnail" src="' + photo.imageURL + '"/>';
+			infowindow.setContent(infowindowTitle + infowindowPhoto);
 		});
 	}
 }
@@ -374,16 +373,26 @@ window.addEventListener('resize', function(e) {
     map.fitBounds(mapBounds);
 });
 
+// Check if google (maps) is not defined.
+function checkMapSuccess() {
+ 	if (typeof google === 'undefined' && !mapFullyLoaded) {
+ 		return true;
+ 	} else {
+ 	 	return false;
+ 	}
+}
+
 var ViewModel = function() {
 	var self = this;
 	self.locs = ko.observableArray(locations);
 	self.filter = ko.observable();
-	self.gmapError = ko.observable(false);
+	self.gmapError = ko.observable(checkMapSuccess());
+	self.loadingDone = ko.observable(false);
 
 	var locs = self.locs();
 	var info = infowindow.largeInfowindow;
 
-	// This function will automatically trigger when the filter string value changes.
+	// This function will get triggered automatically when the filter string value changes.
  	self.filteredLocs = ko.computed(function() {
         var filter = self.filter();
 
@@ -394,7 +403,7 @@ var ViewModel = function() {
 		}
 
         if (!filter) {
-        	// Shows all locations by default when text input value is cleared.
+        	// Show all locations by default when text input value is cleared.
         	for (var i = 0; i < locs.length; i++) {
         		locs[i].marker.setVisible(true);
         	}
@@ -419,10 +428,5 @@ var ViewModel = function() {
     			populateInfoWindow(locs[i].marker, info);
     		}
     	}
-    	console.log(data.title);
     }
 };
-
-function googleMapError() {
-	gmapError(true);
-}
