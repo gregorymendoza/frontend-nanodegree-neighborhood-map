@@ -6,29 +6,7 @@ Fifth project of the Udacity's Front-End Web Developer Nanodegree Program. It is
 
 Preview this project on GitHub pages: https://gregorymendoza.github.io/frontend-nanodegree-neighborhood-map/dist/index.html
 
-If you prefer to test it locally, clone this repository with Git or download the ZIP file and extract it to your local machine, then do the following:
-
-1. Check out the repository
-1. Run a local server
-
-  ```bash
-  $> cd /path/to/your-project-folder
-  $> python -m SimpleHTTPServer 8080
-  # On Windows you might have to change it for this:
-  $> python -m http.server 8080
-  ```
-
-1. Open a browser and visit localhost:8080
-1. Download and install [ngrok](https://ngrok.com/) to the top-level of your project directory to make your local server accessible remotely.
-
-  ``` bash
-  $> cd /path/to/your-project-folder
-  $> ./ngrok http 8080
-  # Or
-  $> ngrok http 8080
-  ```
-
-1. Copy the public URL ngrok gives you and test the app on all devices.
+If you prefer to test it locally, clone this repository with Git, or download the ZIP file, and extract it to your local machine, then open the index.html file from the dist or src folder with your favorite browser.
 
 ## How to Run Grunt
 
